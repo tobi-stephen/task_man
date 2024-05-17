@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+</head>
+<body>
+    <h1>Task List</h1>
+    <ul id="task-list"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+
+        const search = window.location.search;
+        // let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNTkzMjA2MSwianRpIjoiOGEyOGQxYjQtMDc2ZC00ZWE4LThkYzUtNzIyZWMyMmFhNzIxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE1OTMyMDYxLCJjc3JmIjoiMWI0N2I4MDQtZWQ5Ni00ZWVkLTg1YzItMzYzODRhMjFhNjUxIiwiZXhwIjoxNzE1OTg2MDYxfQ.ACV3IdaRtE4EqwzYknlAE6oT4P3X_Ow9yRa84wItZjQ';
+        let token = search.substring(1);
+
+        var socket = io.connect('http://' + document.domain + ':' + location.port, {
+            query: 'token=' + token
+        });
+
+        socket.on('connect', function() {
+            console.log('Connected to WebSocket server');
+            socket.emit('get_tasks');
+        });
+
+        socket.on('tasks', function(data) {
+            console.log('tasks:', data)
+            updateTaskList(data);
+        });
+
+        socket.on('task_created', function(data) {
+            console.log('task_created:', data)
+            addTaskToList(data);
+        });
+
+        socket.on('task_updated', function(data) {
+            console.log('task_updated:', data)
+            updateTaskInList(data);
+        });
+
+        socket.on('task_removed', function(data) {
+            console.log('task_removed:', data)
+            removeTaskFromList(data.id);
+        });
+
+        socket.on('unauthorized', function(message) {
+            console.log('unauthorized:', message);
+        });
+
+        function updateTaskList(tasks) {
+            var taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+            tasks.forEach(function(task) {
+                var li = document.createElement('li');
+                li.setAttribute('id', 'task-' + task.id);
+                li.textContent = 'Task ID: ' + task.id + ', Title: ' + task.title + ', Description: ' + task.description;
+                taskList.appendChild(li);
+            });
+        }
+
+        function addTaskToList(task) {
+            var taskList = document.getElementById('task-list');
+            var li = document.createElement('li');
+            li.setAttribute('id', 'task-' + task.id);
+            li.textContent = 'Task ID: ' + task.id + ', Title: ' + task.title + ', Description: ' + task.description;
+            taskList.appendChild(li);
+        }
+
+        function updateTaskInList(task) {
+            var li = document.getElementById('task-' + task.id);
+            if (li) {
+                li.textContent = 'Task ID: ' + task.id + ', Title: ' + task.title + ', Description: ' + task.description;
+            }
+        }
+
+        function removeTaskFromList(taskId) {
+            var li = document.getElementById('task-' + taskId);
+            if (li) {
+                li.parentNode.removeChild(li);
+            }
+        }
+    </script>
+</body>
+</html>
