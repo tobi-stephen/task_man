@@ -17,7 +17,7 @@ from werkzeug.exceptions import HTTPException
 app = Flask(__name__)
 
 # Setup the socket connection
-socketio = SocketIO(app, async_mode='eventlet')
+socketio = SocketIO(app)
 
 # Configure logging
 logger = logging.getLogger(name='TaskManagement')
