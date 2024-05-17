@@ -9,8 +9,7 @@ A tasks management application with streaming support.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Technologies](#technologies)
-- [Contributing](#contributing)
-- [License](#license)
+- [Streaming test](#streaming)
 
 ## Description
 
