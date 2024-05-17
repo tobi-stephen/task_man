@@ -9,8 +9,7 @@ A tasks management application with streaming support.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Technologies](#technologies)
-- [Contributing](#contributing)
-- [License](#license)
+- [Streaming test](#streaming)
 
 ## Description
 
@@ -28,7 +27,7 @@ This project is a tasks management REST API that allows users to manage tasks. I
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-username/your-repo.git
+    git clone https://github.com/tobi-stephen/task_man.git
     ```
 
 2. Install the dependencies:
@@ -65,7 +64,7 @@ This project is a tasks management REST API that allows users to manage tasks. I
 
 ## Streaming test
 
-In order to stream tasks updates by a specific, a test html route is available at http://localhost:5000/tasks?<access_token>
+In order to stream tasks updates by a specific, a test html route is available at [http://localhost:5000/tasks?<access_token>]
 Where <access_token> is the token generated from the login API route
 
 - Create new tasks, update an existing one and delete tasks using the API and the web page will automatically be updated
